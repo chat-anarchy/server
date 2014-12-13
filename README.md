@@ -2,64 +2,67 @@ Chat Anarchy Server
 ===================
 
 This is the main server component of chat anarchy, a multi-user, multi-room chat using
-socket.io. A full chat anarchy server is just:
+socket.io. A [full chat anarchy server] is just:
 
 server.js
 ---------
 ```js
-    var http = require('http'),
-        fs = require('fs');
+var http = require('http'),
+    fs = require('fs');
 
-    var server = http.createServer(function(req, res) {
-        fs.createReadStream(__dirname + '/index.html').pipe(res);
-    });
+var server = http.createServer(function(req, res) {
+    fs.createReadStream(__dirname + '/index.html').pipe(res);
+});
 
-    require('socket.io')(server)
-        .use(require('chat-anarchy-server')())
+require('socket.io')(server)
+    .use(require('chat-anarchy-server')())
 
-    server.listen(process.env.PORT || 1844, process.env.IP || '127.0.0.1', function() {
-        console.log("Chat anarchy is listening on port %d", server.address().port);
-    });
+server.listen(process.env.PORT || 1844, process.env.IP || '127.0.0.1', function() {
+    console.log("Chat anarchy is listening on port %d", server.address().port);
+});
 ```
 
 index.html
 ----------
 ```html
-    <!doctype html>
-    <title>/</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        * {
-            font: 18px monospace;
-        }
-    </style>
-    <input autofocus style="width:75%">
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io()
-            .on('connect', function() {
-                document.title = location.pathname;
-                socket.emit('join', location.pathname);
-            })
-            .on('announce', log)
-            .on('message', function(data) {
-                log(data.u + ': ' + data.m);
-            })
+<!doctype html>
+<title>/</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    * {
+        font: 18px monospace;
+    }
+</style>
+<input autofocus style="width:75%">
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io()
+        .on('connect', function() {
+            document.title = location.pathname;
+            socket.emit('join', location.pathname);
+        })
+        .on('announce', log)
+        .on('message', function(data) {
+            log(data.u + ': ' + data.m);
+        })
 
-        var input = document.getElementsByTagName('input')[0];
-        input.onchange = function() {
-            socket.send(this.value);
-            this.value = '';
-        };
-        function log(m) {
-            var p = document.createElement('p');
-            p.appendChild(document.createTextNode(m));
-            p.title = Date();
-            document.body.insertBefore(p, input);
-            p.scrollIntoView();
-        }
-    </script>
+    var input = document.getElementsByTagName('input')[0];
+    input.onchange = function() {
+        socket.send(this.value);
+        this.value = '';
+    };
+    function log(m) {
+        var p = document.createElement('p');
+        p.appendChild(document.createTextNode(m));
+        p.title = Date();
+        document.body.insertBefore(p, input);
+        p.scrollIntoView();
+    }
+</script>
 ```
+
+[Full chat anarchy server]: https://github.com/barberboy/chat-anarchy
+
 
 License
 -------
