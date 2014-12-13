@@ -2,7 +2,11 @@ Chat Anarchy Server
 ===================
 
 This is the main server component of chat anarchy, a multi-user, multi-room chat using
-socket.io. A [full chat anarchy server] is just:
+socket.io. A [full chat anarchy server][barberboy/chat-anarchy] is just:
+
+    npm install --save socket.io chat-anarchy-server
+
+Then, set up a socket.io server and initialize the chat-anarchy-server middleware:
 
 server.js
 ---------
@@ -21,6 +25,9 @@ server.listen(process.env.PORT || 1844, process.env.IP || '127.0.0.1', function(
     console.log("Chat anarchy is listening on port %d", server.address().port);
 });
 ```
+
+Finally, set up an index.html file that loads the socket.io client and listens and
+emits events:
 
 index.html
 ----------
@@ -61,7 +68,9 @@ index.html
 </script>
 ```
 
-[Full chat anarchy server]: https://github.com/barberboy/chat-anarchy
+See [barberboy/chat-anarchy] for a full chat anarchy server.
+
+[barberboy/chat-anarchy]: https://github.com/barberboy/chat-anarchy
 
 
 License
